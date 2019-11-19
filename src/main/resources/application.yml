@@ -1,0 +1,52 @@
+spring:
+  application:
+    name: common-api
+  datasource:
+    common:
+      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=false
+      username: root
+      password: abcd1234
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      numTestsPerEvictionRun: 20
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 55000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1
+      testWhileIdle: true
+      testOnBorrow: true
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filters: stat,slf4j
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=1000
+
+  jpa:
+    database: MYSQL
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        ddl.auto: false
+        format_sql: true
+        use_sql_comments: false
+        generate_statistics: false
+        show_sql: false
+        cacheable: false
+        cache:
+          use_query_cache: false
+          use_second_level_cache: false
+          provider_class: org.hibernate.cache.NoCacheProvider
+    show-sql: false
+
+
+  jackson:
+    default-property-inclusion: non_null
+    mapper:
+      USE_ANNOTATIONS: true
+
+spring.http.encoding.force: true
+spring.http.encoding.charset: UTF-8
+spring.http.encoding.enabled: true
+server.tomcat.uri-encoding: UTF-8
