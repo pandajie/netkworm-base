@@ -3,7 +3,7 @@ spring:
     name: common-api
   datasource:
     common:
-      driver-class-name: com.mysql.jdbc.Driver
+      driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=false
       username: root
       password: abcd1234
@@ -32,21 +32,16 @@ spring:
         format_sql: true
         use_sql_comments: false
         generate_statistics: false
-        show_sql: false
+        show_sql: true
         cacheable: false
         cache:
           use_query_cache: false
           use_second_level_cache: false
           provider_class: org.hibernate.cache.NoCacheProvider
-    show-sql: false
+    show-sql: true
 
 
   jackson:
     default-property-inclusion: non_null
     mapper:
       USE_ANNOTATIONS: true
-
-spring.http.encoding.force: true
-spring.http.encoding.charset: UTF-8
-spring.http.encoding.enabled: true
-server.tomcat.uri-encoding: UTF-8
