@@ -14,7 +14,7 @@ public class MathSalary {
         //5-6万/年
         String date = salaryStr.substring(salaryStr.length()-1,salaryStr.length());
         //如果是按天，则直接乘以240计算
-        if("月".equals(date) && !"年".equals(date)){
+        if(!"月".equals(date) && !"年".equals(date)){
             salaryStr  = salaryStr.substring(0,salaryStr.length() -2);
             salary[0] = salary[1] - str2Num(salaryStr,240);
             return salary;

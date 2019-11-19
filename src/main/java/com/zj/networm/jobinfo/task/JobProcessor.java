@@ -45,7 +45,6 @@ public class JobProcessor implements PageProcessor {
             //如果不为空，表示列表页面,解析出详情也的url地址，放到任务队列中
             for(Selectable selectable:list){
                 String jobInfoUrl = selectable.links().toString();
-                System.out.println(jobInfoUrl);
                 page.addTargetRequest(jobInfoUrl);
             }
 
@@ -55,7 +54,6 @@ public class JobProcessor implements PageProcessor {
             page.addTargetRequest(bkUrl);
         }
         //如果为空，表示这是招聘的详情页
-        System.out.println(123);
     }
 
     public void saveJobInfo(Page page){
@@ -68,17 +66,18 @@ public class JobProcessor implements PageProcessor {
         jobInfo.setCompanyAddr(Jsoup.parse(html.css("div.bmsg").nodes().get(1).toString()).text());
         jobInfo.setCompanyInfo(Jsoup.parse(html.css("div.tmsg").toString()).text());
         jobInfo.setJobName(html.css("div.cn h1","text").toString());
-        jobInfo.setJobAddr(html.css("div.cn span.lname","text").toString());
+        String[] jobMutiInfo  = Jsoup.parse(html.css("div.cn p.ltype").toString().replaceAll("\\u00A0+", "")).text().split("\\|");
+        jobInfo.setJobAddr(jobMutiInfo[0].trim());
         jobInfo.setJobInfo(Jsoup.parse(html.css("div.job_msg").toString()).text());
         jobInfo.setUrl(page.getUrl().toString());
 
         //获取薪薪资
         String salary = html.css("div.cn strong","text").toString();
         Integer[] salarys =  MathSalary.getSalary(salary);
-        jobInfo.setSalaryMax(salarys[0]);
-        jobInfo.setSalaryMin(salarys[1]);
-        String time  = Jsoup.parse(html.css("div.t1 span").regex(".*发布").toString()).text();
-        jobInfo.setTime(time.substring(0,time.length()-2));
+        jobInfo.setSalaryMin(salarys[0]);
+        jobInfo.setSalaryMax(salarys[1]);
+        String time  = Jsoup.parse(html.css("div.cn p.ltype").regex("\\|[^\\|]*发布").toString()).text();
+        jobInfo.setTime(time.substring(1,time.length()-2).trim().replaceAll("\\u00A0+", ""));
 
         //保存结果集,内存中
         page.putField("jobInfo",jobInfo);
